@@ -1,764 +1,442 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REBOOST - Bebida Energética</title>
+    <title>Simulador de Fazenda Avançado</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
         
         body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #000;
-            color: #fff;
+            font-family: 'Nunito', sans-serif;
+            background-color: #8BC34A;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='%23689F38' fill-opacity='0.2' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/svg%3E");
             overflow-x: hidden;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(90deg, #0066ff, #00ccff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 10px rgba(0, 102, 255, 0.5);
-        }
-        
-        .gradient-bg {
-            background: linear-gradient(90deg, #0066ff, #00ccff);
-        }
-        
-        .can-animation {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(2deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-        
-        .splash {
-            position: absolute;
-            background: radial-gradient(circle, rgba(0,102,255,0.3) 0%, rgba(0,204,255,0.1) 50%, rgba(0,0,0,0) 70%);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-        }
-        
-        .nav-link {
-            position: relative;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 0;
-            background: linear-gradient(90deg, #0066ff, #00ccff);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .bubble {
-            position: absolute;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.1));
-            border-radius: 50%;
-            animation: rise 8s infinite ease-in;
-            opacity: 0;
-        }
-        
-        @keyframes rise {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(-800px) scale(1.5);
-                opacity: 0;
-            }
-        }
-        
-        .scroll-down {
-            animation: bounce 2s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-20px);
-            }
-            60% {
-                transform: translateY(-10px);
-            }
-        }
-        
-        .flavor-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .flavor-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 25px -5px rgba(0, 102, 255, 0.2), 0 10px 10px -5px rgba(0, 204, 255, 0.1);
-        }
-        
-        .mobile-menu {
-            transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
-        }
-        
-        .mobile-menu.open {
-            transform: translateX(0);
-        }
-        
-        .electric-text {
-            position: relative;
-            display: inline-block;
-            font-weight: 900;
-            letter-spacing: -1px;
-            color: #00ccff;
-            text-shadow: 
-                0 0 5px #0066ff,
-                0 0 10px #0066ff,
-                0 0 20px #0066ff,
-                0 0 40px #0066ff;
-            animation: flicker 2s infinite alternate;
-        }
-        
-        @keyframes flicker {
-            0%, 18%, 22%, 25%, 53%, 57%, 100% {
-                text-shadow: 
-                    0 0 5px #0066ff,
-                    0 0 10px #0066ff,
-                    0 0 20px #0066ff,
-                    0 0 40px #0066ff;
-            }
-            20%, 24%, 55% {
-                text-shadow: none;
-            }
-        }
-        
-        .lightning {
-            position: absolute;
-            opacity: 0;
-            animation: lightning 5s infinite;
-        }
-        
-        @keyframes lightning {
-            0%, 95%, 100% {
-                opacity: 0;
-            }
-            96%, 99% {
-                opacity: 1;
-            }
-        }
-        
-        .product-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 25px -5px rgba(0, 102, 255, 0.2), 0 10px 10px -5px rgba(0, 204, 255, 0.1);
         }
     </style>
 </head>
-<body>
-    <nav class="fixed top-0 left-0 w-full z-50 bg-black bg-opacity-80 backdrop-blur-md">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center">
-                <h1 class="text-3xl font-black tracking-tighter">
-                    <span class="electric-text">REBOOST</span>
-                </h1>
-            </div>
-            
-            <div class="hidden md:flex space-x-8">
-                <a href="#home" class="nav-link font-medium text-white hover:text-blue-400 transition">Início</a>
-                <a href="#flavors" class="nav-link font-medium text-white hover:text-blue-400 transition">Sabores</a>
-                <a href="#products" class="nav-link font-medium text-white hover:text-blue-400 transition">Produtos</a>
-                <a href="#about" class="nav-link font-medium text-white hover:text-blue-400 transition">Sobre</a>
-                <a href="#contact" class="nav-link font-medium text-white hover:text-blue-400 transition">Contato</a>
-            </div>
-            
-            <div class="hidden md:block">
-                <button class="gradient-bg px-6 py-2 rounded-full font-bold text-white hover:opacity-90 transition">
-                    Comprar Agora
-                </button>
-            </div>
-            
-            <div class="md:hidden">
-                <button id="menu-toggle" class="text-white text-2xl">
-                    <i class="fas fa-bars"></i>
+<body class="min-h-screen">
+    <div id="game-container" class="container mx-auto px-4 py-8">
+        <!-- Start Screen -->
+        <div id="start-screen" class="fixed inset-0 flex items-center justify-center bg-green-800 bg-opacity-90 z-50">
+            <div class="bg-white rounded-lg shadow-2xl p-8 max-w-lg w-full text-center">
+                <h1 class="text-5xl font-bold text-green-700 mb-6">🌾 Fazenda Feliz 🌾</h1>
+                <p class="text-xl text-gray-700 mb-8">Bem-vindo ao seu simulador de fazenda! Plante, colha, crie animais e torne-se o melhor fazendeiro da região!</p>
+                
+                <div class="mb-6">
+                    <label for="farmer-name" class="block text-lg font-semibold text-gray-700 mb-2">Nome do Fazendeiro:</label>
+                    <input type="text" id="farmer-name" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Digite seu nome">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-lg font-semibold text-gray-700 mb-2">Escolha sua Fazenda:</label>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="farm-option p-3 border-2 border-transparent hover:border-green-500 rounded-lg bg-green-100" data-farm="valley" onclick="selectFarm('valley')">
+                            <div class="text-3xl mb-2">🏞️</div>
+                            <h3 class="font-bold">Vale Verdejante</h3>
+                            <p class="text-sm text-gray-600">Bom para culturas</p>
+                        </div>
+                        <div class="farm-option p-3 border-2 border-transparent hover:border-green-500 rounded-lg bg-green-100" data-farm="hills" onclick="selectFarm('hills')">
+                            <div class="text-3xl mb-2">⛰️</div>
+                            <h3 class="font-bold">Colinas Férteis</h3>
+                            <p class="text-sm text-gray-600">Bom para animais</p>
+                        </div>
+                        <div class="farm-option p-3 border-2 border-transparent hover:border-green-500 rounded-lg bg-green-100" data-farm="river" onclick="selectFarm('river')">
+                            <div class="text-3xl mb-2">🌊</div>
+                            <h3 class="font-bold">Margem do Rio</h3>
+                            <p class="text-sm text-gray-600">Equilibrado</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="start-game-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-xl transition-colors">
+                    Começar Aventura!
                 </button>
             </div>
         </div>
-    </nav>
-    
-    <div id="mobile-menu" class="mobile-menu fixed top-0 left-0 h-full w-3/4 bg-black z-50 p-6">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-2xl font-black tracking-tighter">
-                <span class="electric-text">REBOOST</span>
-            </h1>
-            <button id="close-menu" class="text-white text-2xl">
-                <i class="fas fa-times"></i>
-            </button>
+        
+        <!-- Game Content (hidden initially) -->
+        <div id="game-content" class="hidden">
+            <header class="mb-6">
+                <div class="flex flex-col md:flex-row justify-between items-center bg-white bg-opacity-90 rounded-lg shadow-lg p-4">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <div class="mr-4">
+                            <img id="player-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%234CAF50'/%3E%3Ccircle cx='50' cy='40' r='20' fill='%23FFC107'/%3E%3Crect x='30' y='60' width='40' height='30' fill='%23795548'/%3E%3C/svg%3E" alt="Avatar" class="w-16 h-16 rounded-full border-4 border-green-600">
+                        </div>
+                        <div>
+                            <h1 class="text-2xl md:text-3xl font-bold text-green-800" id="farm-name">Fazenda Feliz</h1>
+                            <p class="text-gray-600">Fazendeiro: <span id="player-name">Agricultor</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-3 justify-center">
+                        <div class="bg-green-100 rounded-lg p-2 flex items-center">
+                            <span class="text-xl mr-1">💰</span>
+                            <span class="font-bold">$<span id="money">1000</span></span>
+                        </div>
+                        <div class="bg-blue-100 rounded-lg p-2 flex items-center">
+                            <span class="text-xl mr-1">⭐</span>
+                            <span class="font-bold">Nível <span id="level">1</span></span>
+                        </div>
+                        <div class="bg-amber-100 rounded-lg p-2 flex items-center">
+                            <span class="text-xl mr-1">📅</span>
+                            <span class="font-bold">Dia <span id="day">1</span>, <span id="season">Primavera</span> Ano <span id="year">1</span></span>
+                        </div>
+                        <div id="weather-display" class="bg-purple-100 rounded-lg p-2 flex items-center">
+                            <span id="weather-icon" class="text-xl mr-1">☀️</span>
+                            <span class="font-bold" id="weather-text">Ensolarado</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="flex flex-col lg:flex-row gap-6">
+                <!-- Main Game Area -->
+                <div class="w-full lg:w-3/4">
+                    <!-- Tabs -->
+                    <div class="bg-white bg-opacity-90 rounded-lg shadow-lg mb-6">
+                        <div class="flex overflow-x-auto">
+                            <button class="tab-btn flex-1 py-3 px-4 font-bold text-center border-b-4 border-green-600 text-green-600" data-tab="farm" onclick="switchTab('farm')">
+                                🌱 Fazenda
+                            </button>
+                            <button class="tab-btn flex-1 py-3 px-4 font-bold text-center border-b-4 border-transparent text-gray-500 hover:text-gray-700" data-tab="animals" onclick="switchTab('animals')">
+                                🐄 Animais
+                            </button>
+                            <button class="tab-btn flex-1 py-3 px-4 font-bold text-center border-b-4 border-transparent text-gray-500 hover:text-gray-700" data-tab="market" onclick="switchTab('market')">
+                                🛒 Mercado
+                            </button>
+                            <button class="tab-btn flex-1 py-3 px-4 font-bold text-center border-b-4 border-transparent text-gray-500 hover:text-gray-700" data-tab="quests" onclick="switchTab('quests')">
+                                📜 Missões
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab Contents -->
+                    <div id="farm-tab" class="tab-content block">
+                        <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-6 mb-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-2xl font-bold text-green-800">Seus Terrenos</h2>
+                                <div class="flex items-center">
+                                    <button id="water-all-btn" class="mr-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center">
+                                        <span class="mr-1">💧</span> Regar Tudo
+                                    </button>
+                                    <button id="harvest-all-btn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center">
+                                        <span class="mr-1">🧺</span> Colher Tudo
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div id="farm-plots" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                <!-- Farm plots will be generated here -->
+                                <div class="plot bg-yellow-800 bg-opacity-70 h-32 rounded-lg cursor-pointer relative overflow-hidden">
+                                    <div class="crop-icon text-yellow-600 opacity-50">🌱</div>
+                                </div>
+                                <div class="plot bg-yellow-800 bg-opacity-70 h-32 rounded-lg cursor-pointer relative overflow-hidden">
+                                    <div class="crop-icon text-yellow-600 opacity-50">🌱</div>
+                                </div>
+                                <div class="plot bg-yellow-800 bg-opacity-70 h-32 rounded-lg cursor-pointer relative overflow-hidden">
+                                    <div class="crop-icon text-yellow-600 opacity-50">🌱</div>
+                                </div>
+                                <div class="plot bg-yellow-800 bg-opacity-70 h-32 rounded-lg cursor-pointer relative overflow-hidden">
+                                    <div class="crop-icon text-yellow-600 opacity-50">🌱</div>
+                                </div>
+                                <div class="plot bg-yellow-800 bg-opacity-70 h-32 rounded-lg cursor-pointer relative overflow-hidden">
+                                    <div class="crop-icon text-yellow-600 opacity-50">🌱</div>
+                                </div>
+                                <div class="plot bg-yellow-800 bg-opacity-70 h-32 rounded-lg cursor-pointer relative overflow-hidden">
+                                    <div class="crop-icon text-yellow-600 opacity-50">🌱</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="animals-tab" class="tab-content hidden">
+                        <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-6 mb-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-2xl font-bold text-green-800">Seus Animais</h2>
+                                <div class="flex items-center">
+                                    <button id="feed-all-btn" class="mr-2 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center">
+                                        <span class="mr-1">🌽</span> Alimentar Todos
+                                    </button>
+                                    <button id="collect-all-btn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center">
+                                        <span class="mr-1">🥚</span> Coletar Produtos
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div id="animal-pens" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                <!-- Animal pens will be generated here -->
+                                <div class="animal-pen bg-green-800 bg-opacity-70 h-40 rounded-lg cursor-pointer relative overflow-hidden">
+                                    <div class="animal-icon text-green-600 opacity-50">🏕️</div>
+                                </div>
+                                <div class="animal-pen bg-green-800 bg-opacity-70 h-40 rounded-lg cursor-pointer relative overflow-hidden">
+                                    <div class="animal-icon text-green-600 opacity-50">🏕️</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="market-tab" class="tab-content hidden">
+                        <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-6 mb-6">
+                            <h2 class="text-2xl font-bold text-green-800 mb-4">Mercado</h2>
+                            
+                            <div class="mb-6">
+                                <h3 class="text-xl font-bold text-green-700 mb-2">Preços de Mercado</h3>
+                                <div class="bg-gray-100 rounded-lg p-4">
+                                    <p class="text-sm text-gray-600 mb-2">Os preços mudam diariamente com base na demanda.</p>
+                                    <div id="market-prices" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                                        <!-- Market prices will be generated here -->
+                                        <div class="bg-white p-2 rounded-lg">
+                                            <div class="flex items-center">
+                                                <span class="text-xl mr-2">🌽</span>
+                                                <div>
+                                                    <p class="font-semibold">Milho</p>
+                                                    <p class="text-green-600">$25</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white p-2 rounded-lg">
+                                            <div class="flex items-center">
+                                                <span class="text-xl mr-2">🥔</span>
+                                                <div>
+                                                    <p class="font-semibold">Batata</p>
+                                                    <p class="text-green-600">$45</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="text-xl font-bold text-green-700 mb-2">Comprar</h3>
+                                    <div class="space-y-3">
+                                        <div class="bg-green-50 rounded-lg p-4">
+                                            <h4 class="font-bold text-lg mb-2">Sementes</h4>
+                                            <div id="seeds-shop" class="space-y-2">
+                                                <!-- Seeds will be generated here -->
+                                                <div class="flex justify-between items-center p-2 rounded bg-white">
+                                                    <div>
+                                                        <span class="text-xl mr-2">🌽</span>
+                                                        <span class="font-semibold">Milho</span>
+                                                        <p class="text-xs text-gray-600">Preço: $10 | Tempo: 3 dias</p>
+                                                    </div>
+                                                    <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-3 rounded text-sm transition-colors">Comprar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="quests-tab" class="tab-content hidden">
+                        <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-6 mb-6">
+                            <h2 class="text-2xl font-bold text-green-800 mb-4">Missões</h2>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-green-700 mb-2">Missões Ativas</h3>
+                                    <div id="active-quests" class="space-y-3">
+                                        <!-- Active quests will be generated here -->
+                                        <div class="bg-amber-50 p-3 rounded-lg border border-amber-200">
+                                            <h4 class="font-bold">Primeiros Passos</h4>
+                                            <p class="text-sm">Colha 5 vegetais de qualquer tipo</p>
+                                            <div class="flex justify-between items-center mt-2">
+                                                <div class="text-xs text-gray-600">Progresso: 0/5</div>
+                                                <div class="text-xs text-green-600">Recompensa: $100</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="w-full lg:w-1/4">
+                    <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-4 mb-6">
+                        <h2 class="text-xl font-bold text-green-800 mb-3">Ações</h2>
+                        <div class="space-y-2">
+                            <button id="next-day-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+                                <span class="mr-2">📅</span> Próximo Dia
+                            </button>
+                            <button id="save-game-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
+                                <span class="mr-2">💾</span> Salvar Jogo
+                            </button>
+                            <button id="load-game-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
+                                <span class="mr-2">📂</span> Carregar Jogo
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-4 mb-6">
+                        <h2 class="text-xl font-bold text-green-800 mb-3">Estatísticas</h2>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span>Total Colhido:</span>
+                                <span id="total-harvested">0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Produtos Animais:</span>
+                                <span id="total-animal-products">0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Dinheiro Ganho:</span>
+                                <span>$<span id="total-earned">0</span></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Dinheiro Gasto:</span>
+                                <span>$<span id="total-spent">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-4">
+                        <h2 class="text-xl font-bold text-green-800 mb-3">Eventos</h2>
+                        <div id="events-log" class="h-48 overflow-y-auto bg-gray-100 rounded p-2 text-sm">
+                            <!-- Events will be logged here -->
+                            <p class="mb-1"><span class="text-green-600">Dia 1:</span> Bem-vindo à sua nova fazenda!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="flex flex-col space-y-6">
-            <a href="#home" class="font-medium text-white hover:text-blue-400 transition">Início</a>
-            <a href="#flavors" class="font-medium text-white hover:text-blue-400 transition">Sabores</a>
-            <a href="#products" class="font-medium text-white hover:text-blue-400 transition">Produtos</a>
-            <a href="#about" class="font-medium text-white hover:text-blue-400 transition">Sobre</a>
-            <a href="#contact" class="font-medium text-white hover:text-blue-400 transition">Contato</a>
-            <button class="gradient-bg px-6 py-2 rounded-full font-bold text-white hover:opacity-90 transition mt-4">
-                Comprar Agora
-            </button>
+        
+        <!-- Notification -->
+        <div id="notification" class="fixed top-20 right-20 p-3 bg-green-600 text-white rounded-lg shadow-lg transform translate-x-full transition-transform duration-300">
+            Notificação
         </div>
     </div>
-    
-    <section id="home" class="relative min-h-screen flex items-center overflow-hidden pt-20">
-        <div id="bubbles-container" class="absolute inset-0 pointer-events-none"></div>
-        
-        <div class="container mx-auto px-4 py-20 flex flex-col md:flex-row items-center">
-            <div class="md:w-1/2 z-10 mb-12 md:mb-0">
-                <h1 class="text-5xl md:text-7xl font-black leading-tight mb-6">
-                    AUMENTE SUA <span class="gradient-text">ENERGIA</span> COM REBOOST
-                </h1>
-                <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-lg">
-                    Experimente o melhor energético do mercado. Feito com ingredientes naturais e repleto de vitaminas para o seu dia a dia.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <button class="gradient-bg px-8 py-3 rounded-full font-bold text-white hover:opacity-90 transition text-lg">
-                        Comprar Agora
-                    </button>
-                    <button class="bg-transparent border-2 border-white px-8 py-3 rounded-full font-bold text-white hover:bg-white hover:text-black transition text-lg">
-                        Saiba Mais
-                    </button>
-                </div>
-            </div>
-            
-            <div class="md:w-1/2 relative flex justify-center">
-                <div class="relative">
-                    <div class="absolute w-[400px] h-[400px] rounded-full bg-gradient-to-r from-blue-600/20 to-blue-400/10 blur-3xl -z-10"></div>
-                    
-                    <svg class="lightning absolute top-0 left-1/4 w-full h-full" viewBox="0 0 100 400" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M60,0 L40,150 L70,150 L30,300" stroke="#00ccff" stroke-width="2" fill="none" />
-                    </svg>
-                    
-                    <svg class="lightning absolute top-0 right-1/4 w-full h-full" style="animation-delay: 1.5s" viewBox="0 0 100 400" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M40,0 L60,150 L30,150 L70,300" stroke="#0066ff" stroke-width="2" fill="none" />
-                    </svg>
-                    
-                    <svg class="can-animation w-64 md:w-80 z-10" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="canGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#0066ff" />
-                                <stop offset="100%" stop-color="#00ccff" />
-                            </linearGradient>
-                            <linearGradient id="topGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="#0055cc" />
-                                <stop offset="100%" stop-color="#0099cc" />
-                            </linearGradient>
-                            <linearGradient id="reflectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="rgba(255,255,255,0.4)" />
-                                <stop offset="100%" stop-color="rgba(255,255,255,0)" />
-                            </linearGradient>
-                            <filter id="glow">
-                                <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        
-                        <ellipse cx="100" cy="40" rx="60" ry="20" fill="url(#topGradient)" />
-                        
-                        <rect x="40" y="40" width="120" height="300" fill="url(#canGradient)" />
-                        
-                        <ellipse cx="100" cy="340" rx="60" ry="20" fill="#0055cc" />
-                        
-                        <ellipse cx="100" cy="40" rx="15" ry="5" fill="#222" />
-                        <ellipse cx="100" cy="38" rx="12" ry="4" fill="#111" />
-                        
-                        <rect x="50" y="80" width="100" height="200" rx="5" fill="#111" />
-                        
-                        <text x="100" y="150" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="white" filter="url(#glow)">REBOOST</text>
-                        
-                        <text x="100" y="180" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">ENERGÉTICO</text>
-                        
-                        <path d="M90,200 L85,230 L100,220 L95,250 L115,210 L100,215 L105,200 Z" fill="#00ccff" filter="url(#glow)" />
-                        
-                        <path d="M40,60 Q50,100 40,150 L60,150 Q70,100 60,60 Z" fill="url(#reflectionGradient)" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-        
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center">
-            <p class="text-gray-400 mb-2">Rolar para baixo</p>
-            <i class="fas fa-chevron-down text-blue-500 scroll-down"></i>
-        </div>
-    </section>
-    
-    <section id="flavors" class="py-20 bg-gradient-to-b from-black to-gray-900">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">DESCUBRA NOSSOS <span class="gradient-text">SABORES</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">Experimente a combinação perfeita de sabor e energia com nossa linha exclusiva de sabores.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="flavor-card bg-gradient-to-br from-blue-900/30 to-blue-700/20 rounded-2xl p-6 border border-blue-500/20">
-                    <div class="h-48 flex items-center justify-center mb-6">
-                        <svg class="w-32" viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="originalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#0066ff" />
-                                    <stop offset="100%" stop-color="#00ccff" />
-                                </linearGradient>
-                            </defs>
-                            <rect x="20" y="20" width="60" height="150" rx="5" fill="url(#originalGradient)" />
-                            <text x="50" y="100" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">ORIGINAL</text>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">Explosão Original</h3>
-                    <p class="text-gray-300 mb-4">Nosso sabor clássico com o equilíbrio perfeito de doçura e ingredientes energéticos.</p>
-                    <button class="gradient-bg w-full py-3 rounded-full font-bold text-white hover:opacity-90 transition">
-                        Saiba Mais
-                    </button>
-                </div>
-                
-                <div class="flavor-card bg-gradient-to-br from-purple-900/30 to-blue-700/20 rounded-2xl p-6 border border-purple-500/20">
-                    <div class="h-48 flex items-center justify-center mb-6">
-                        <svg class="w-32" viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="berryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#9333ea" />
-                                    <stop offset="100%" stop-color="#0066ff" />
-                                </linearGradient>
-                            </defs>
-                            <rect x="20" y="20" width="60" height="150" rx="5" fill="url(#berryGradient)" />
-                            <text x="50" y="100" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">FRUTAS</text>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">Impulso de Frutas</h3>
-                    <p class="text-gray-300 mb-4">Uma mistura refrescante de frutas vermelhas que entrega um sabor incrível a cada gole.</p>
-                    <button class="bg-gradient-to-r from-purple-600 to-blue-500 w-full py-3 rounded-full font-bold text-white hover:opacity-90 transition">
-                        Saiba Mais
-                    </button>
-                </div>
-                
-                <div class="flavor-card bg-gradient-to-br from-cyan-900/30 to-blue-700/20 rounded-2xl p-6 border border-cyan-500/20">
-                    <div class="h-48 flex items-center justify-center mb-6">
-                        <svg class="w-32" viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="tropicalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#06b6d4" />
-                                    <stop offset="100%" stop-color="#0284c7" />
-                                </linearGradient>
-                            </defs>
-                            <rect x="20" y="20" width="60" height="150" rx="5" fill="url(#tropicalGradient)" />
-                            <text x="50" y="100" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">TROPICAL</text>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">Onda Tropical</h3>
-                    <p class="text-gray-300 mb-4">Escape para o paraíso com nossa mistura exótica de frutas tropicais e potenciadores de energia.</p>
-                    <button class="bg-gradient-to-r from-cyan-600 to-blue-500 w-full py-3 rounded-full font-bold text-white hover:opacity-90 transition">
-                        Saiba Mais
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section id="products" class="py-20 bg-black">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">PRODUTOS <span class="gradient-text">COMPLEMENTARES</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">Maximize seu desempenho com nossa linha de suplementos de alta qualidade.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="product-card bg-gradient-to-br from-blue-900/30 to-blue-700/20 rounded-2xl p-6 border border-blue-500/20">
-                    <div class="h-64 flex items-center justify-center mb-6">
-                        <svg class="w-48" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="40" y="30" width="120" height="220" rx="10" fill="#111" />
-                            
-                            <rect x="45" y="35" width="110" height="210" rx="8" fill="#0066ff" />
-                            
-                            <text x="100" y="70" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">CREATINA</text>
-                            <text x="100" y="90" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">100% PURA</text>
-                            
-                            <text x="100" y="220" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">300g</text>
-                            
-                            <text x="100" y="240" font-family="Arial" font-size="10" font-weight="bold" text-anchor="middle" fill="white">INTEGRALMÉDICA</text>
-                            
-                            <circle cx="100" cy="150" r="40" fill="white" />
-                            <path d="M80,150 Q100,120 120,150 Q100,180 80,150 Z" fill="#0066ff" />
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">Creatina 100% Pura</h3>
-                    <p class="text-gray-300 mb-4">Suplemento de alta qualidade para aumentar sua força, potência e recuperação muscular. 300g de creatina monohidratada pura.</p>
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-xl font-bold text-blue-400">R$ 89,90</span>
-                        <span class="text-sm text-gray-400 line-through">R$ 119,90</span>
-                    </div>
-                    <button class="gradient-bg w-full py-3 rounded-full font-bold text-white hover:opacity-90 transition">
-                        Adicionar ao Carrinho
-                    </button>
-                </div>
-                
-                <div class="product-card bg-gradient-to-br from-purple-900/30 to-blue-700/20 rounded-2xl p-6 border border-purple-500/20">
-                    <div class="h-64 flex items-center justify-center mb-6">
-                        <svg class="w-48" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="40" y="30" width="120" height="220" rx="10" fill="#111" />
-                            
-                            <rect x="45" y="35" width="110" height="210" rx="8" fill="#9333ea" />
-                            
-                            <text x="100" y="70" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">PRÉ-TREINO</text>
-                            <text x="100" y="90" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">EXTREME</text>
-                            
-                            <text x="100" y="220" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">300g</text>
-                            
-                            <text x="100" y="240" font-family="Arial" font-size="10" font-weight="bold" text-anchor="middle" fill="white">REBOOST</text>
-                            
-                            <circle cx="100" cy="150" r="40" fill="white" />
-                            <path d="M80,130 L120,130 L120,170 L80,170 Z" fill="#9333ea" />
-                            <path d="M90,140 L110,140 L110,160 L90,160 Z" fill="white" />
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">Pré-Treino Extreme</h3>
-                    <p class="text-gray-300 mb-4">Maximize seu treino com nosso pré-treino de alta performance. Energia explosiva, foco e bomba muscular.</p>
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-xl font-bold text-purple-400">R$ 129,90</span>
-                        <span class="text-sm text-gray-400 line-through">R$ 159,90</span>
-                    </div>
-                    <button class="bg-gradient-to-r from-purple-600 to-blue-500 w-full py-3 rounded-full font-bold text-white hover:opacity-90 transition">
-                        Adicionar ao Carrinho
-                    </button>
-                </div>
-                
-                <div class="product-card bg-gradient-to-br from-cyan-900/30 to-blue-700/20 rounded-2xl p-6 border border-cyan-500/20">
-                    <div class="h-64 flex items-center justify-center mb-6">
-                        <svg class="w-48" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="40" y="30" width="120" height="220" rx="10" fill="#111" />
-                            
-                            <rect x="45" y="35" width="110" height="210" rx="8" fill="#06b6d4" />
-                            
-                            <text x="100" y="70" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">BCAA</text>
-                            <text x="100" y="90" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">2:1:1</text>
-                            
-                            <text x="100" y="220" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">200g</text>
-                            
-                            <text x="100" y="240" font-family="Arial" font-size="10" font-weight="bold" text-anchor="middle" fill="white">REBOOST</text>
-                            
-                            <circle cx="100" cy="150" r="40" fill="white" />
-                            <text x="100" y="155" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#06b6d4">BCAA</text>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">BCAA 2:1:1</h3>
-                    <p class="text-gray-300 mb-4">Aminoácidos essenciais para recuperação muscular e prevenção do catabolismo. Sabor limão com zero açúcar.</p>
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-xl font-bold text-cyan-400">R$ 69,90</span>
-                        <span class="text-sm text-gray-400 line-through">R$ 89,90</span>
-                    </div>
-                    <button class="bg-gradient-to-r from-cyan-600 to-blue-500 w-full py-3 rounded-full font-bold text-white hover:opacity-90 transition">
-                        Adicionar ao Carrinho
-                    </button>
-                </div>
-            </div>
-            
-            <div class="mt-16 text-center">
-                <button class="gradient-bg px-8 py-3 rounded-full font-bold text-white hover:opacity-90 transition">
-                    Ver Todos os Produtos
-                </button>
-            </div>
-        </div>
-    </section>
-    
-    <section id="about" class="py-20 bg-black">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-12 md:mb-0">
-                    <div class="relative">
-                        <div class="absolute w-[300px] h-[300px] rounded-full bg-gradient-to-r from-blue-600/20 to-blue-400/10 blur-3xl -z-10"></div>
-                        <svg class="w-full max-w-md mx-auto" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="200" cy="200" r="150" fill="none" stroke="#0066ff" stroke-width="2" stroke-dasharray="5,5" />
-                            
-                            <circle cx="200" cy="100" r="30" fill="#0066ff" opacity="0.8" />
-                            <text x="200" y="105" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Cafeína</text>
-                            
-                            <circle cx="300" cy="200" r="30" fill="#00ccff" opacity="0.8" />
-                            <text x="300" y="205" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Vitaminas B</text>
-                            
-                            <circle cx="200" cy="300" r="30" fill="#0066ff" opacity="0.8" />
-                            <text x="200" y="305" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Taurina</text>
-                            
-                            <circle cx="100" cy="200" r="30" fill="#00ccff" opacity="0.8" />
-                            <text x="100" y="205" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Ginseng</text>
-                            
-                            <circle cx="200" cy="200" r="50" fill="url(#canGradient)" />
-                            <text x="200" y="195" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">REBOOST</text>
-                            <text x="200" y="210" font-family="Arial" font-size="10" text-anchor="middle" fill="white">FÓRMULA</text>
-                            
-                            <line x1="200" y1="150" x2="200" y2="130" stroke="#0066ff" stroke-width="2" />
-                            <line x1="250" y1="200" x2="270" y2="200" stroke="#00ccff" stroke-width="2" />
-                            <line x1="200" y1="250" x2="200" y2="270" stroke="#0066ff" stroke-width="2" />
-                            <line x1="150" y1="200" x2="130" y2="200" stroke="#00ccff" stroke-width="2" />
-                        </svg>
-                    </div>
-                </div>
-                
-                <div class="md:w-1/2 md:pl-12">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-6">A <span class="gradient-text">CIÊNCIA</span> POR TRÁS DA ENERGIA</h2>
-                    <p class="text-gray-300 mb-6">REBOOST é elaborado com uma mistura perfeita de ingredientes energéticos projetados para melhorar seu desempenho e mantê-lo ativo durante todo o dia.</p>
-                    
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="gradient-bg p-3 rounded-full mr-4">
-                                <i class="fas fa-bolt text-white"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold mb-2">Energia Instantânea</h3>
-                                <p class="text-gray-400">Nossa fórmula única proporciona um impulso imediato de energia sem a queda posterior.</p>
-                                <img src="WhatsApp%20Image%202025-03-27%20at%2014.06.43.jpeg" alt="Gráfico de Energia Reboost" class="mt-4 rounded-lg shadow-lg">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section id="how-it-works" class="py-20 bg-gray-900">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-4xl md:text-5xl font-bold mb-12">COMO <span class="gradient-text">FUNCIONA</span></h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-                <div class="flex flex-col items-center">
-                    <div class="gradient-bg p-6 rounded-full mb-6 text-4xl">
-                        <i class="fas fa-flask text-white"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">Fórmula Otimizada</h3>
-                    <p class="text-gray-300">Ingredientes de alta qualidade trabalhando em sinergia para maximizar sua energia.</p>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="gradient-bg p-6 rounded-full mb-6 text-4xl">
-                        <i class="fas fa-tint text-white"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">Absorção Rápida</h3>
-                    <p class="text-gray-300">Sinta o efeito em minutos, ideal para antes do treino ou para um boost no trabalho.</p>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="gradient-bg p-6 rounded-full mb-6 text-4xl">
-                        <i class="fas fa-chart-line text-white"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">Desempenho Aprimorado</h3>
-                    <p class="text-gray-300">Aumente o foco, a resistência e a produtividade durante todo o seu dia.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="testimonials" class="py-20 bg-black">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">O QUE NOSSOS <span class="gradient-text">CLIENTES DIZEM</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">Leia os depoimentos de pessoas que transformaram sua energia com REBOOST.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700/50 shadow-lg">
-                    <div class="flex items-center mb-4">
-                        <img src="https://via.placeholder.com/60" alt="Avatar Cliente 1" class="w-16 h-16 rounded-full mr-4 border-2 border-blue-500">
-                        <div>
-                            <p class="font-bold text-lg">João Silva</p>
-                            <p class="text-gray-400 text-sm">Atleta Profissional</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-300 italic">"REBOOST mudou meu jogo! Sinto uma energia e foco incríveis em cada treino. Recomendo a todos os atletas."</p>
-                    <div class="flex justify-end mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-
-                <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700/50 shadow-lg">
-                    <div class="flex items-center mb-4">
-                        <img src="https://via.placeholder.com/60" alt="Avatar Cliente 2" class="w-16 h-16 rounded-full mr-4 border-2 border-blue-500">
-                        <div>
-                            <p class="font-bold text-lg">Maria Santos</p>
-                            <p class="text-gray-400 text-sm">Estudante Universitária</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-300 italic">"Perfeito para as longas noites de estudo! REBOOST me mantém alerta e produtiva sem me deixar agitada. Amo!"</p>
-                    <div class="flex justify-end mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                </div>
-
-                <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700/50 shadow-lg">
-                    <div class="flex items-center mb-4">
-                        <img src="https://via.placeholder.com/60" alt="Avatar Cliente 3" class="w-16 h-16 rounded-full mr-4 border-2 border-blue-500">
-                        <div>
-                            <p class="font-bold text-lg">Pedro Costa</p>
-                            <p class="text-gray-400 text-sm">Empresário</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-300 italic">"A energia que eu precisava para encarar o dia. REBOOST me ajuda a manter o foco e a produtividade no trabalho."</p>
-                    <div class="flex justify-end mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-20 bg-gradient-to-r from-blue-700 to-cyan-500 text-center">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">PRONTO PARA SENTIR A <span class="text-black">DIFERENÇA?</span></h2>
-            <p class="text-white text-lg md:text-xl mb-8 max-w-2xl mx-auto">Junte-se a milhares de pessoas que já elevaram seus limites com REBOOST.</p>
-            <button class="bg-white text-blue-700 px-10 py-4 rounded-full font-bold text-xl hover:bg-gray-200 transition shadow-lg">
-                EXPERIMENTE REBOOST AGORA!
-            </button>
-        </div>
-    </section>
-    
-    <section id="contact" class="py-20 bg-gray-900">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">FALE <span class="gradient-text">CONOSCO</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">Tem alguma dúvida, sugestão ou quer saber mais sobre nossos produtos? Entre em contato!</p>
-            </div>
-            
-            <div class="max-w-3xl mx-auto bg-gray-800 rounded-2xl p-8 border border-gray-700/50 shadow-lg">
-                <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="name" class="block text-gray-300 text-sm font-bold mb-2">Nome Completo</label>
-                        <input type="text" id="name" name="name" class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500" placeholder="Seu nome">
-                    </div>
-                    <div>
-                        <label for="email" class="block text-gray-300 text-sm font-bold mb-2">Email</label>
-                        <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500" placeholder="seuemail@exemplo.com">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label for="subject" class="block text-gray-300 text-sm font-bold mb-2">Assunto</label>
-                        <input type="text" id="subject" name="subject" class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500" placeholder="Assunto da mensagem">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label for="message" class="block text-gray-300 text-sm font-bold mb-2">Mensagem</label>
-                        <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500" placeholder="Sua mensagem..."></textarea>
-                    </div>
-                    <div class="md:col-span-2 text-center">
-                        <button type="submit" class="gradient-bg px-8 py-3 rounded-full font-bold text-white hover:opacity-90 transition text-lg">
-                            Enviar Mensagem
-                        </button>
-                    </div>
-                </form>
-            </div>
-            
-            <div class="flex flex-col md:flex-row justify-center items-center mt-12 space-y-6 md:space-y-0 md:space-x-12 text-gray-400">
-                <div class="flex items-center">
-                    <i class="fas fa-phone-alt text-blue-400 text-xl mr-3"></i>
-                    <span>+55 (11) 98765-4321</span>
-                </div>
-                <div class="flex items-center">
-                    <i class="fas fa-envelope text-blue-400 text-xl mr-3"></i>
-                    <span>contato@reboost.com</span>
-                </div>
-                <div class="flex items-center">
-                    <i class="fas fa-map-marker-alt text-blue-400 text-xl mr-3"></i>
-                    <span>Rua da Energia, 123, São Paulo - SP</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-black py-8">
-        <div class="container mx-auto px-4 text-center text-gray-500">
-            <p>&copy; 2025 REBOOST. Todos os direitos reservados.</p>
-            <div class="flex justify-center space-x-6 mt-4">
-                <a href="#" class="text-gray-400 hover:text-blue-500 transition"><i class="fab fa-facebook-f text-xl"></i></a>
-                <a href="#" class="text-gray-400 hover:text-blue-500 transition"><i class="fab fa-instagram text-xl"></i></a>
-                <a href="#" class="text-gray-400 hover:text-blue-500 transition"><i class="fab fa-twitter text-xl"></i></a>
-                <a href="#" class="text-gray-400 hover:text-blue-500 transition"><i class="fab fa-linkedin-in text-xl"></i></a>
-            </div>
-            <p class="text-sm mt-4">Feito com <span class="text-red-500">&hearts;</span> para impulsionar seu dia.</p>
-        </div>
-    </footer>
 
     <script>
-        // Mobile Menu Toggle
-        const menuToggle = document.getElementById('menu-toggle');
-        const closeMenu = document.getElementById('close-menu');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const navLinks = document.querySelectorAll('#mobile-menu a');
-
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.add('open');
-        });
-
-        closeMenu.addEventListener('click', () => {
-            mobileMenu.classList.remove('open');
-        });
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('open');
+        // Game state
+        let selectedFarm = null;
+        
+        // Function to select farm
+        function selectFarm(farmType) {
+            // Remove selection from all options
+            document.querySelectorAll('.farm-option').forEach(option => {
+                option.classList.remove('border-green-500');
+                option.classList.add('border-transparent');
             });
-        });
-
-        // Dynamic Bubbles in Hero Section
-        const bubblesContainer = document.getElementById('bubbles-container');
-
-        function createBubble() {
-            const bubble = document.createElement('div');
-            bubble.classList.add('bubble');
             
-            const size = Math.random() * 60 + 20; // Bubbles between 20px and 80px
-            bubble.style.width = `${size}px`;
-            bubble.style.height = `${size}px`;
+            // Add selection to clicked option
+            const selectedOption = document.querySelector(`.farm-option[data-farm="${farmType}"]`);
+            selectedOption.classList.remove('border-transparent');
+            selectedOption.classList.add('border-green-500');
             
-            bubble.style.left = `${Math.random() * 100}%`;
-            bubble.style.top = `${100 + Math.random() * 100}px`; // Start below view
+            // Store selected farm
+            selectedFarm = farmType;
             
-            const animationDuration = Math.random() * 5 + 5; // 5 to 10 seconds
-            bubble.style.animationDuration = `${animationDuration}s`;
-            
-            const delay = Math.random() * 5; // 0 to 5 seconds delay
-            bubble.style.animationDelay = `${delay}s`;
-
-            bubblesContainer.appendChild(bubble);
-
-            // Remove bubble after animation ends to prevent DOM overload
-            bubble.addEventListener('animationend', () => {
-                bubble.remove();
-            });
+            // Show notification
+            showNotification(`Fazenda ${farmType === 'valley' ? 'Vale Verdejante' : farmType === 'hills' ? 'Colinas Férteis' : 'Margem do Rio'} selecionada!`);
         }
-
-        // Create bubbles periodically
-        setInterval(createBubble, 500); // Create a new bubble every 0.5 seconds
+        
+        // Function to show notification
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.remove('translate-x-full');
+            
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+            }, 3000);
+        }
+        
+        // Function to start game
+        document.getElementById('start-game-btn').addEventListener('click', function() {
+            const farmerName = document.getElementById('farmer-name').value.trim() || "Agricultor";
+            
+            if (!selectedFarm) {
+                showNotification("Por favor, escolha uma fazenda antes de começar!");
+                return;
+            }
+            
+            // Hide start screen
+            document.getElementById('start-screen').classList.add('hidden');
+            
+            // Show game content
+            document.getElementById('game-content').classList.remove('hidden');
+            
+            // Set player name
+            document.getElementById('player-name').textContent = farmerName;
+            
+            // Set farm name based on farm type
+            let farmName = "";
+            if (selectedFarm === "valley") {
+                farmName = "Vale Verdejante de " + farmerName;
+            } else if (selectedFarm === "hills") {
+                farmName = "Colinas Férteis de " + farmerName;
+            } else {
+                farmName = "Fazenda à Beira-Rio de " + farmerName;
+            }
+            document.getElementById('farm-name').textContent = farmName;
+            
+            // Log welcome message
+            logEvent("Bem-vindo à sua nova fazenda! Comece plantando algumas sementes.");
+        });
+        
+        // Function to switch tabs
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Show selected tab content
+            document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-green-600', 'text-green-600');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.remove('border-transparent', 'text-gray-500');
+            document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('border-green-600', 'text-green-600');
+        }
+        
+        // Function to log events
+        function logEvent(message) {
+            const eventsLog = document.getElementById('events-log');
+            const day = document.getElementById('day').textContent;
+            
+            const eventElement = document.createElement('p');
+            eventElement.className = 'mb-1';
+            eventElement.innerHTML = `<span class="text-green-600">Dia ${day}:</span> ${message}`;
+            
+            eventsLog.prepend(eventElement);
+        }
+        
+        // Add event listeners for buttons
+        document.getElementById('next-day-btn').addEventListener('click', function() {
+            const day = document.getElementById('day');
+            day.textContent = parseInt(day.textContent) + 1;
+            logEvent("Um novo dia começou!");
+        });
+        
+        document.getElementById('water-all-btn').addEventListener('click', function() {
+            showNotification("Todas as plantas foram regadas!");
+        });
+        
+        document.getElementById('harvest-all-btn').addEventListener('click', function() {
+            showNotification("Todas as plantas prontas foram colhidas!");
+        });
+        
+        document.getElementById('save-game-btn').addEventListener('click', function() {
+            showNotification("Jogo salvo com sucesso!");
+        });
+        
+        document.getElementById('load-game-btn').addEventListener('click', function() {
+            showNotification("Jogo carregado com sucesso!");
+        });
     </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94b1c536f20ed986',t:'MTc0OTE0ODUzMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
